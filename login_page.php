@@ -44,15 +44,15 @@
       <section class="login-form-wrap">
         <div class="form-header">
           <h2 id="login-title">Masuk Akun</h2>
-          <div class="form-desc">Masukkan NIP/NIS atau email & kata sandi Anda</div>
+          <div class="form-desc">Masukkan Nama Lengkap & kata sandi Anda</div>
         </div>
 
         <div id="feedback" class="feedback" style="display:none" role="status" aria-live="polite"></div>
 
         <form id="login-form" novalidate>
           <div class="field">
-            <label for="user">NIP / NIS / Email</label>
-            <input id="user" name="user" type="text" placeholder="contoh: 19930908 atau rahmat@example.com" required autocomplete="username">
+            <label for="user">Nama Lengkap</label>
+            <input id="user" name="user" type="text" placeholder="contoh: SHAMAD NUGI FAIZA" required autocomplete="username">
           </div>
 
           <div class="field password-wrap">
@@ -62,24 +62,15 @@
           </div>
 
           <div class="row">
-            <label class="checkbox"><input type="checkbox" id="remember"> <span>Ingat saya</span></label>
-            <a class="forgot" href="#">Lupa kata sandi?</a>
+            <label class="checkbox"><input type="checkbox" id="remember"> <span>Ingat saya</span></label>
           </div>
 
           <button type="submit" class="btn btn-primary"> <i class="fa-solid fa-right-to-bracket"></i> Masuk</button>
-
-          <div class="divider"></div>
-
-          <div class="helper">Atau masuk dengan:</div>
-          <div class="socials">
-            <button type="button" class="btn" id="sso-google"><i class="fa-brands fa-google"></i> Google</button>
-            <button type="button" class="btn" id="sso-local"><i class="fa-solid fa-building"></i> LDAP</button>
-          </div>
+
 
         </form>
 
-        <div class="form-footer">
-          <small class="helper">Belum punya akun? <a href="#">Hubungi admin</a></small>
+        <div class="form-footer">
           <small class="helper">Versi <strong>Portal v1.0</strong></small>
         </div>
       </section>
