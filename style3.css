@@ -1,0 +1,328 @@
+/* Definisikan variabel warna baru sesuai logo */
+:root {
+    --primary-red: #B71C1C;
+    /* Merah Tua, mirip di logo */
+    --light-red: #F0F4F7;
+    /* Latar belakang pattern, abu-abu muda mendekati putih */
+    --accent-yellow: #FFD600;
+    /* Kuning terang, untuk highlight */
+    --secondary-green: #388E3C;
+    /* Hijau yang lebih kalem (jika ingin mempertahankan hijau) */
+    --shadow-color: rgba(0, 0, 0, 0.08);
+
+    /* Warna teks default */
+    --text-dark: #333;
+    --text-muted: #6c757d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Menggunakan font yang umum */
+}
+
+body {
+    background-color: #f8f9fa;
+    /* Tetap abu-abu terang */
+}
+
+/* ------------------------------------------- */
+/* UTILITY CLASSES (diperbarui) */
+/* ------------------------------------------- */
+.blue {
+    color: #007bff;
+}
+
+.yellow {
+    color: var(--accent-yellow);
+}
+
+/* Menggunakan kuning aksen */
+.green {
+    color: var(--secondary-green);
+}
+
+/* Menggunakan hijau sekunder */
+.text-muted {
+    color: var(--text-muted);
+}
+
+/* ------------------------------------------- */
+/* MAIN LAYOUT (Flexbox) */
+/* ------------------------------------------- */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ------------------------------------------- */
+/* SIDEBAR (diperbarui) */
+/* ------------------------------------------- */
+.sidebar {
+    width: 250px;
+    background-color: var(--primary-red);
+    /* Warna sidebar merah */
+    position: fixed;
+    height: 100vh;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    /* Border putih transparan */
+    color: white;
+    /* Warna teks di sidebar jadi putih */
+}
+
+.sidebar-header {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    /* Header sidebar putih */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Profil Section */
+.profile-section {
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 2px solid var(--accent-yellow);
+    /* Border foto kuning */
+}
+
+.profile-name {
+    margin: 0;
+    font-weight: bold;
+    color: white;
+    /* Nama profil putih */
+}
+
+.profile-role {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    /* Role profil putih agak transparan */
+}
+
+/* Menu Navigasi */
+.menu {
+    flex-grow: 1;
+    padding-top: 20px;
+}
+
+.menu-item {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    /* Warna teks menu putih agak transparan */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.menu-item i {
+    margin-right: 10px;
+}
+
+.menu-item:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Hover agak putih transparan */
+    color: white;
+    /* Teks hover jadi putih solid */
+}
+
+.menu-item.active {
+    background-color: white;
+    /* Menu aktif latar belakang putih */
+    border-left: 5px solid var(--accent-yellow);
+    /* Border kiri kuning */
+    font-weight: bold;
+    color: var(--text-dark);
+    /* Teks menu aktif jadi hitam */
+}
+
+/* Logout Section */
+.logout-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-section .menu-item {
+    padding: 15px 20px;
+}
+
+/* ------------------------------------------- */
+/* PAGE CONTENT */
+/* ------------------------------------------- */
+.page-content-wrapper {
+    flex-grow: 1;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+/* Navbar Atas (tetap putih agar bersih) */
+.navbar-top {
+    background-color: #fff;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+}
+
+.page-title h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--text-dark);
+}
+
+.menu-toggle {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    cursor: pointer;
+    color: var(--text-dark);
+    display: none;
+}
+
+
+/* Main Content Area (Latar Belakang Bergaris) */
+.main-content-area {
+    padding: 20px;
+    background-color: var(--light-red);
+    /* Latar belakang pattern merah muda/abu-abu */
+    min-height: calc(100vh - 65px);
+    background-image: repeating-linear-gradient(to right,
+            transparent,
+            transparent 99px,
+            rgba(0, 0, 0, 0.03) 100px,
+            /* Garis lebih tipis */
+            rgba(0, 0, 0, 0.03) 100px);
+}
+
+
+/* --------------------------------------------- */
+/* CSS KHUSUS HALAMAN DAFTAR TUGAS (Tugas.php) */
+/* --------------------------------------------- */
+
+/* Container untuk form dan table, memberikan ruang bernapas */
+.main-content-area h3 {
+    color: var(--primary-red);
+    margin-top: 30px;
+}
+
+/* Card untuk Form Tambah Tugas */
+.form-tambah-tugas {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.form-tambah-tugas input {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px; /* Tambahkan padding di sini */
+}
+
+/* Tombol Tambah di form tugas */
+.form-tambah-tugas .btn-action {
+    background-color: var(--primary-red) !important; /* Ganti warna tombol utama menjadi merah */
+    color: white;
+    flex: 1;
+    transition: background-color 0.2s;
+}
+.form-tambah-tugas .btn-action:hover {
+    background-color: #A01A1A !important;
+}
+
+/* Tabel Tugas */
+.tugas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white; /* Pastikan latar belakang tabel putih */
+    box-shadow: 0 2px 4px var(--shadow-color);
+    border-radius: 8px;
+    overflow: hidden; /* Untuk membuat border-radius tabel berfungsi */
+}
+
+.tugas-table th,
+.tugas-table td {
+    border: 1px solid #eee;
+    padding: 12px 10px;
+    text-align: left;
+}
+
+.tugas-table thead th {
+    background-color: var(--light-red); /* Gunakan light-red sebagai latar belakang header tabel */
+    color: var(--primary-red); /* Teks header merah */
+    font-weight: bold;
+    border-bottom: 2px solid var(--primary-red);
+}
+
+/* Aksi Button */
+.btn-action {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Tetap merah standar untuk Danger/Hapus */
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Gaya Alert (Diselaraskan dengan tema) */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    position: relative;
+    font-weight: 500;
+}
+
+.success-alert {
+    color: var(--secondary-green);
+    background-color: #e6ffed; /* Hijau muda */
+    border: 1px solid var(--secondary-green);
+}
+
+.error-alert {
+    color: var(--primary-red);
+    background-color: #ffe6e6; /* Merah muda */
+    border: 1px solid var(--primary-red);
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: inherit;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Judul khusus */
+.title-red {
+    color: var(--primary-red); /* Menggunakan variabel utama */
+}
