@@ -304,12 +304,12 @@
       }
 
       .login-hero {
-        order: 2;
+        order: 1;
         padding: 22px
       }
 
       .login-form-wrap {
-        order: 1;
+        order: 2;
         padding: 22px
       }
     }
