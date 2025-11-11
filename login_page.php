@@ -1,3 +1,70 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+  header("location: manajemen_siswa.php");
+  exit;
+}
+
+require_once 'koneksi.php';
+
+$feedback_message = "";
+$feedback_type = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $user_input = trim($_POST["user"]);
+  $password = trim($_POST["password"]);
+
+  if (empty($user_input) || empty($password)) {
+    $feedback_message = "Isi semua bidang sebelum masuk.";
+    $feedback_type = "error";
+  } else {
+    $login_field = 'email';
+
+    $sql = "SELECT id, email, password, role FROM tb_users WHERE {$login_field} = ? AND is_active = 1";
+
+    if ($stmt = $conn->prepare($sql)) {
+      $stmt->bind_param("s", $param_user);
+      $param_user = $user_input;
+
+      if ($stmt->execute()) {
+        $stmt->store_result();
+
+        if ($stmt->num_rows == 1) {
+          $stmt->bind_result($user_id, $email, $hashed_password, $role);
+          if ($stmt->fetch()) {
+            if ($password === $hashed_password) {
+              session_start();
+              $_SESSION["loggedin"] = true;
+              $_SESSION["user_id"] = $user_id;
+              $_SESSION["email"] = $email;
+              $_SESSION["role"] = $role;
+
+              $feedback_message = "Login berhasil! Mengalihkan...";
+              $feedback_type = "success";
+
+              header("refresh:0.9;url=manajemen_siswa.php");
+              exit;
+            } else {
+              $feedback_message = "Kredensial salah. Periksa kembali username dan kata sandi.";
+              $feedback_type = "error";
+            }
+          }
+        } else {
+          $feedback_message = "Kredensial salah. Periksa kembali username dan kata sandi.";
+          $feedback_type = "error";
+        }
+      } else {
+        $feedback_message = "Terjadi kesalahan saat memproses permintaan.";
+        $feedback_type = "error";
+      }
+      $stmt->close();
+    }
+  }
+}
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -12,7 +79,6 @@
 <body>
   <div class="page-wrap">
     <div class="login-card" role="main" aria-labelledby="login-title">
-
       <aside class="login-hero" aria-hidden="false">
         <div class="brand">
           <div class="logo">SMK</div>
@@ -21,9 +87,7 @@
             <small>Profil Sekolah — Portal Admin</small>
           </div>
         </div>
-
         <p class="hero-content">Selamat datang! Masuk untuk mengelola data siswa, jadwal, dan tugas. Pastikan akun Anda memiliki hak akses sebagai Admin atau Guru.</p>
-
         <div class="hero-stats">
           <div class="hero-stat">
             <h4>1330</h4>
@@ -38,21 +102,23 @@
             <p>Jurusan</p>
           </div>
         </div>
-
       </aside>
 
       <section class="login-form-wrap">
         <div class="form-header">
           <h2 id="login-title">Masuk Akun</h2>
-          <div class="form-desc">Masukkan Nama Lengkap & kata sandi Anda</div>
+          <div class="form-desc">Masukkan NIP/NIS atau email & kata sandi Anda</div>
         </div>
 
-        <div id="feedback" class="feedback" style="display:none" role="status" aria-live="polite"></div>
+        <div id="feedback" class="feedback <?php echo htmlspecialchars($feedback_type); ?>"
+          style="display:<?php echo empty($feedback_message) ? 'none' : 'block'; ?>" role="status" aria-live="polite">
+          <?php echo htmlspecialchars($feedback_message); ?>
+        </div>
 
-        <form id="login-form" novalidate>
+        <form id="login-form" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" novalidate>
           <div class="field">
-            <label for="user">Nama Lengkap</label>
-            <input id="user" name="user" type="text" placeholder="contoh: SHAMAD NUGI FAIZA" required autocomplete="username">
+            <label for="user">NIP / NIS / Email</label>
+            <input id="user" name="user" type="text" placeholder="contoh: 19930908 atau rahmat@example.com" required autocomplete="username" value="<?php echo isset($user_input) ? htmlspecialchars($user_input) : ''; ?>">
           </div>
 
           <div class="field password-wrap">
@@ -62,15 +128,24 @@
           </div>
 
           <div class="row">
-            <label class="checkbox"><input type="checkbox" id="remember"> <span>Ingat saya</span></label>
+            <label class="checkbox"><input type="checkbox" id="remember" name="remember"> <span>Ingat saya</span></label>
+            <a class="forgot" href="#">Lupa kata sandi?</a>
           </div>
 
           <button type="submit" class="btn btn-primary"> <i class="fa-solid fa-right-to-bracket"></i> Masuk</button>
-
+
+          <div class="divider"></div>
+
+          <div class="helper">Atau masuk dengan:</div>
+          <div class="socials">
+            <button type="button" class="btn" id="sso-google"><i class="fa-brands fa-google"></i> Google</button>
+            <button type="button" class="btn" id="sso-local"><i class="fa-solid fa-building"></i> LDAP</button>
+          </div>
 
         </form>
 
-        <div class="form-footer">
+        <div class="form-footer">
+          <small class="helper">Belum punya akun? <a href="#">Hubungi admin</a></small>
           <small class="helper">Versi <strong>Portal v1.0</strong></small>
         </div>
       </section>
@@ -79,9 +154,6 @@
   </div>
 
   <script>
-    // elemen
-    const form = document.getElementById('login-form');
-    const feedback = document.getElementById('feedback');
     const togglePass = document.querySelector('.toggle-pass');
     const password = document.getElementById('password');
     const eyeIcon = document.getElementById('eye-icon');
@@ -95,56 +167,9 @@
       togglePass.setAttribute('aria-pressed', isPwd ? 'true' : 'false');
     });
 
-    // simple client-side validation + demo "fake" auth response
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      feedback.style.display = 'none';
-      const user = document.getElementById('user').value.trim();
-      const pwd = password.value.trim();
-
-      if (!user || !pwd) {
-        showFeedback('Isi semua bidang sebelum masuk.', 'error');
-        return;
-      }
-
-      // contoh validasi pola email atau numeric id
-      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user);
-      const isNumericId = /^\d{4,}$/.test(user);
-
-      if (!isEmail && !isNumericId) {
-        showFeedback('Masukkan NIS/NIP (angka) atau email yang valid.', 'error');
-        return;
-      }
-
-      // simulasi pemrosesan (DI SITUS NYATA: kirim ke server via fetch POST)
-      showFeedback('Memeriksa kredensial...', 'success');
-      // simulasi respons
-      setTimeout(() => {
-        // contoh: jika password == "admin123" -> sukses (hanya demo)
-        if (pwd === 'admin123') {
-          showFeedback('Login berhasil! Mengalihkan...', 'success');
-          // redirect demo
-          setTimeout(() => {
-            window.location.href = 'manajemen_siswa.php';
-          }, 900);
-        } else {
-          showFeedback('Kredensial salah. Periksa kembali username dan kata sandi.', 'error');
-        }
-      }, 900);
-    });
-
-    function showFeedback(message, type) {
-      feedback.textContent = message;
-      feedback.className = 'feedback ' + (type === 'error' ? 'error' : 'success');
-      feedback.style.display = 'block';
-    }
-
     // Optional: keyboard accessibility - submit on Enter from password field
     password.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') form.dispatchEvent(new Event('submit', {
-        cancelable: true,
-        bubbles: true
-      }));
+      if (e.key === 'Enter') document.getElementById('login-form').submit();
     });
   </script>
 </body>
