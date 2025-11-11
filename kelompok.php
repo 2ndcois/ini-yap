@@ -243,6 +243,20 @@ if (isset($_GET['kelompok']) || $pesan_sukses == 'Anggota berhasil ditambahkan k
         .modal.show {
             display: block;
         }
+
+        .page-content-wrapper {
+            margin-left: 250px;
+            flex-grow: 1;
+            width: calc(100% - 250px);
+        }
+
+        @media (max-width: 768px) {
+            .page-content-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
     </style>
 </head>
 
@@ -280,11 +294,13 @@ if (isset($_GET['kelompok']) || $pesan_sukses == 'Anggota berhasil ditambahkan k
             </div>
 
             <div class="logout-section">
-                <a href="#" class="menu-item">
+                <a href="loguot.php" class="menu-item">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
         </div>
+
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
         
         <div class="page-content-wrapper"> 
             <div class="navbar-top">
@@ -554,6 +570,21 @@ if (isset($_GET['kelompok']) || $pesan_sukses == 'Anggota berhasil ditambahkan k
             });
         });
     });
+    </script>
+     <script>
+        const toggle = document.getElementById("menu-toggle");
+        const sidebar = document.querySelector(".sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+        });
+
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        });
     </script>
 </body>
 
