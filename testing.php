@@ -157,12 +157,25 @@ $query_siswa = mysqli_query($koneksi, "SELECT * FROM tb_siswa ORDER BY NamaSiswa
             /* Kuning sedikit lebih gelap saat hover */
         }
 
+        .page-content-wrapper {
+            margin-left: 250px;
+            flex-grow: 1;
+            width: calc(100% - 250px);
+        }
+
         .main-content-area {
             padding: 20px !important;
         }
 
         .table-responsive {
             margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .page-content-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -192,7 +205,7 @@ $query_siswa = mysqli_query($koneksi, "SELECT * FROM tb_siswa ORDER BY NamaSiswa
                 <a href="testing.php" class="menu-item  active">
                     <i class="fas fa-user-graduate"></i> Data Siswa
                 </a>
-                <a href="tugas.php" class="menu-item">
+                <a href="Tugas.php" class="menu-item">
                     <i class="fas fa-ticket-alt"></i> Daftar Tugas
                 </a>
                 <a href="kelompok.php" class="menu-item">
@@ -201,7 +214,7 @@ $query_siswa = mysqli_query($koneksi, "SELECT * FROM tb_siswa ORDER BY NamaSiswa
             </div>
 
             <div class="logout-section">
-                <a href="#" class="menu-item">
+                <a href="loguot.php" class="menu-item">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -375,19 +388,19 @@ $query_siswa = mysqli_query($koneksi, "SELECT * FROM tb_siswa ORDER BY NamaSiswa
             </div>
         </div>
 
-<script>
-    // Modal Edit tetap jalan
-    document.addEventListener('DOMContentLoaded', function() {
-        var myModal = new bootstrap.Modal(document.getElementById('editSiswaModal'));
-        myModal.show();
-    });
-</script>
-<div class="modal-backdrop fade show"></div>
-<?php endif; ?>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Modal Edit tetap jalan
+            document.addEventListener('DOMContentLoaded', function() {
+                var myModal = new bootstrap.Modal(document.getElementById('editSiswaModal'));
+                myModal.show();
+            });
+        </script>
+        <div class="modal-backdrop fade show"></div>
+    <?php endif; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    const toggle = document.getElementById("menu-toggle");
+    <script>
+        const toggle = document.getElementById("menu-toggle");
         const sidebar = document.querySelector(".sidebar");
         const overlay = document.getElementById("sidebar-overlay");
 
@@ -400,7 +413,7 @@ $query_siswa = mysqli_query($koneksi, "SELECT * FROM tb_siswa ORDER BY NamaSiswa
             sidebar.classList.remove("active");
             overlay.classList.remove("active");
         });
-</script>
+    </script>
 </body>
 
 </html>
