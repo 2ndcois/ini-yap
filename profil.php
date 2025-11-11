@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Data Diri - SMKN 1 Tenggarong</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style2.css"> 
+    <link rel="stylesheet" href="style2.css">
     <style>
-.edit-profile-diri {
+        .edit-profile-diri {
             display: block;
             width: 80%;
             margin: 10px auto 0 auto;
@@ -31,11 +31,24 @@
             background-color: #ffb300;
             /* Kuning sedikit lebih gelap saat hover */
         }
+
+        .page-content-wrapper {
+            margin-left: 250px;
+            flex-grow: 1;
+            width: calc(100% - 250px);
+        }
+
+        @media (max-width: 768px) {
+            .page-content-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="wrapper"> 
+    <div class="wrapper">
 
         <div class="sidebar">
             <div class="sidebar-header">SMKN 1 TENGGARONG</div>
@@ -44,7 +57,7 @@
                 <img src="profil dashboard.jpg" alt="Foto Profil" class="profile-pic">
                 <p class="profile-name">Rahmat Alfarizi</p>
                 <small class="profile-role">Admin</small>
-                
+
                 <a href="profil.php" class="edit-profile-diri">
                     <i class="fas fa-edit"></i> Edit Profil
                 </a>
@@ -69,25 +82,27 @@
             </div>
 
             <div class="logout-section">
-                <a href="#" class="menu-item">
+                <a href="loguot.php" class="menu-item">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
         </div>
 
-        <div class="page-content-wrapper"> 
-            
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <div class="page-content-wrapper">
+
             <div class="navbar-top">
                 <div class="page-title">
                     <i class="fas fa-bars menu-toggle" id="menu-toggle"></i>
-                    <h2>Profil Data Diri</h2> 
+                    <h2>Profil Data Diri</h2>
                 </div>
             </div>
-            
+
             <div class="main-content-area">
 
                 <div class="data-container">
-                    
+
                     <div class="profile-card">
                         <h3 class="title-red"><i class="fas fa-user-circle"></i> Informasi Dasar</h3>
                         <div class="profile-grid">
@@ -101,7 +116,7 @@
                                     <li><strong>Agama:</strong> Islam</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="profile-card" style="margin-bottom: 0;">
                                 <ul class="data-list">
                                     <li><strong>Kelas / Rombel:</strong> XII RPL B</li>
@@ -144,6 +159,21 @@
             </div>
         </div>
     </div>
+     <script>
+        const toggle = document.getElementById("menu-toggle");
+        const sidebar = document.querySelector(".sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+        });
+
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        });
+    </script>
 </body>
 
 </html>
